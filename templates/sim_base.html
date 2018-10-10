@@ -1,0 +1,30 @@
+<doctype <!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>{% block title %}{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="{{url_for('static',filename='sim_base.css')}}" />
+</head>
+<body>
+    <div id="container">
+        <header id="header">
+            {% block header %}
+            header here
+            {% endblock %}
+        </header>
+
+        <aside id="aside">
+            {% block aside %}
+            aside here
+            {% endblock %}
+        </aside>
+        <main id="main">
+            {% block main %}
+            main here
+            {% endblock %}
+        </main>
+    </div>    
+</body>
+</html>

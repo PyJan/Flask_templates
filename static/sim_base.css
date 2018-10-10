@@ -1,0 +1,22 @@
+body {
+    background-color: antiquewhite;
+}
+
+#container {
+    display: grid;
+    grid-template-rows: 200px auto;
+    grid-template-columns: 150px auto;
+    grid-template-areas: "header header" "aside main";
+}
+
+#header {
+    grid-area: header;
+}
+
+#aside {
+    grid-area: aside;
+}
+
+#main {
+    grid-area: main;
+}
