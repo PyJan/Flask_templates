@@ -11,7 +11,17 @@
 </head>
 
 <body>
-    <h1>this is main.html</h1> wtf
+    <h1>this is main.html</h1> wtf {% macro render_comment(comment)%}
+    <h1>comment</h1>
+    {% endmacro %} {{render_comment(comment)}}
+    <p>
+        {% import 'macros.html' as macros%} {{macros.create_table('PyJan', '33')}}
+    </p>
+    <p>
+        {% include 'common.html' %}
+    </p>
+
+
 </body>
 
 </html>
