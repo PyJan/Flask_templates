@@ -18,5 +18,9 @@ def child():
 def simbase():
     return render_template('sim_base.html')
 
+@app.route('/sim')
+def sim():
+    return render_template('sim.html')
+
 if __name__ == '__main__':
     app.run(debug=True)
