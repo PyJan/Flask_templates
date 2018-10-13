@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for
+from flask import Flask, render_template, url_for, request
 
 app = Flask(__name__)
 
@@ -18,9 +18,14 @@ def child():
 def simbase():
     return render_template('sim_base.html')
 
-@app.route('/sim')
+@app.route('/sim', methods=['GET', 'POST'])
 def sim():
-    return render_template('sim.html')
+    corr, spotstd, fwdstd = 0.8, 2, 3
+    if request.method=='POST':
+        corr = request.form.get('corr')
+        spotstd = request.form.get('spotstd')
+        fwdstd = request.form.get('fwdstd')
+    return render_template('sim.html', corr=corr, spotstd=spotstd, fwdstd=fwdstd)
 
 if __name__ == '__main__':
     app.run(debug=True)

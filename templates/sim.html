@@ -1,4 +1,11 @@
 {% extends 'sim_base.html' %}
 {% block main %}
-simulace je tady
+<form method="POST" name="input">
+    <ul>
+        <li>Model Correlation: <input type="text" name="corr" value={{corr}}></li>
+        <li>Spot STD: <input type="text" name="spotstd" value={{spotstd}}></li>
+        <li>Forward STD: <input type="text" name="fwdstd" value={{fwdstd}}></li>
+        <br><input type="submit" name="calculate" value="Calculate">
+    </ul>
+</form>
 {% endblock %}
