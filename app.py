@@ -24,12 +24,12 @@ def simbase():
 @app.route('/sim', methods=['GET', 'POST'])
 def sim():
     hedgeratio = HedgeRatio()
-    #corr, spotstd, fwdstd = 0.8, 2, 3
     if request.method=='POST':
         corr = request.form.get('corr')
         spotstd = request.form.get('spotstd')
         fwdstd = request.form.get('fwdstd')
-        hedgeratio.updateParameters(float(corr), float(spotstd), float(fwdstd))
+        numobserv = request.form.get('numobserv')
+        hedgeratio.updateParameters(float(corr), float(spotstd), float(fwdstd), int(numobserv))
     else:
         corr, spotstd, fwdstd, numobserv = hedgeratio.getParameters()
     hedgeratio.runSimulation()
@@ -44,7 +44,7 @@ def sim():
         }
     p = hedgeratio.createScatterPlot()
     script, div = components(p)
-    return render_template('sim.html', corr=corr, 
+    return render_template('sim.html', corr=corr, numobserv=numobserv,
     spotstd=spotstd, fwdstd=fwdstd, script=script, div=div, stats=stats)
 
 if __name__ == '__main__':

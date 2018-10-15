@@ -74,8 +74,9 @@ class HedgeRatio():
         """
         return calculated standard deviations of spot and fwd
         """
-        covmatrix = self._sim.cov().applymap(np.math.sqrt)
-        return round(covmatrix.iloc[0,0], 3), round(covmatrix.iloc[1,1], 3)
+        covmatrix = self._sim.cov()
+        return (round(np.math.sqrt(covmatrix.iloc[0,0]), 3),
+                round(np.math.sqrt(covmatrix.iloc[1,1]), 3))
     
     def calculateHedgeRatio(self):
         """
@@ -103,7 +104,7 @@ class HedgeRatio():
         """
         p = figure(title='Spot delta as a function of forward delta', 
                    x_axis_label='Forward delta', y_axis_label='Spot delta')
-        p.circle(self._sim['spot'], self._sim['fwd'], size=5)
+        p.circle(self._sim['fwd'], self._sim['spot'], size=5)
         return p
         
     def showScatterPlot(self):
