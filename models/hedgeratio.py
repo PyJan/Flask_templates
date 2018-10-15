@@ -34,47 +34,47 @@ class HedgeRatio():
         # return scatter plot
         p = hedgeratio.createScatterPlot()
     """
-    def __init__(self):
+    def __init__(self, rho=0.8, sigmaspot=2, sigmafwd=3, numobserv=1000):
         """
         initialize with default values
         """
-        self.rho = 0.81
-        self.sigmaspot = 2
-        self.sigmafwd = 3
-        self.numobserv = 1000
-        self.sim = pd.DataFrame()
+        self._rho = rho
+        self._sigmaspot = sigmaspot
+        self._sigmafwd = sigmafwd
+        self._numobserv = numobserv
+        self._sim = pd.DataFrame()
         
     def __str__(self):
         return 'Implementation of hedge ratio model'
     
     def __repr__(self):
         return 'HedgeRatio({0}, {1}, {2}, {3})'.format(
-                self.rho,
-                self.sigmaspot,
-                self.sigmafwd,
-                self.numobserv)
+                self._rho,
+                self._sigmaspot,
+                self._sigmafwd,
+                self._numobserv)
                
     def runSimulation(self):
         """
         create scenario for daily spot and fwd deltas
         """
-        x = DataFrame(np.random.normal(size=(self.numobserv,2)), 
+        x = DataFrame(np.random.normal(size=(self._numobserv,2)), 
                       columns=['rand1','rand2'])
-        self.sim['spot'] = self.sigmaspot*x['rand1']
-        self.sim['fwd'] = ((self.rho*x['rand1'] + np.sqrt(1-self.rho**2)*x['rand2'])
-                            *self.sigmafwd)
+        self._sim['spot'] = self._sigmaspot*x['rand1']
+        self._sim['fwd'] = ((self._rho*x['rand1'] + np.sqrt(1-self._rho**2)*x['rand2'])
+                            *self._sigmafwd)
         
     def calculateCorr(self):
         """
         return calculated correlation between spot and fwd
         """
-        return round(self.sim.corr().iloc[0,1],3)
+        return round(self._sim.corr().iloc[0,1],3)
     
     def calculateSTDs(self):
         """
         return calculated standard deviations of spot and fwd
         """
-        covmatrix = self.sim.cov().applymap(np.math.sqrt)
+        covmatrix = self._sim.cov().applymap(np.math.sqrt)
         return round(covmatrix.iloc[0,0], 3), round(covmatrix.iloc[1,1], 3)
     
     def calculateHedgeRatio(self):
@@ -89,7 +89,7 @@ class HedgeRatio():
         """
         standard deviation of 1 hedge strategy
         """
-        return self.sim.mul([1,hedgecoef*(-1)]).sum(axis=1).std()
+        return self._sim.mul([1,hedgecoef*(-1)]).sum(axis=1).std()
         
     def calculateHedgeStrategies(self, granularity=np.arange(0,2.1,0.05)):
         """
@@ -103,7 +103,7 @@ class HedgeRatio():
         """
         p = figure(title='Spot delta as a function of forward delta', 
                    x_axis_label='Forward delta', y_axis_label='Spot delta')
-        p.circle(self.sim['spot'], self.sim['fwd'], size=5)
+        p.circle(self._sim['spot'], self._sim['fwd'], size=5)
         return p
         
     def showScatterPlot(self):
@@ -113,9 +113,25 @@ class HedgeRatio():
         reset_output()
         output_file('showme2.html')
         show(self.createScatterPlot())
-
-
         
+    def updateParameters(self, rho=None, sigmaspot=None, sigmafwd=None, numobserv=None):
+        """
+        update parameters of the model
+        """
+        if rho is not None:
+            self._rho = rho
+        if sigmaspot is not None:
+            self._sigmaspot = sigmaspot
+        if sigmafwd is not None:
+            self._sigmafwd = sigmafwd
+        if numobserv is not None:
+            self._numobserv = numobserv
+            
+    def getParameters(self):
+        """
+        return parameters in tuple (rho, sigmaspot, sigmafwd, numobserv)
+        """
+        return self._rho, self._sigmaspot, self._sigmafwd, self._numobserv
         
 if __name__ == '__main__':
     hedgeratio = HedgeRatio()

@@ -23,20 +23,29 @@ def simbase():
 
 @app.route('/sim', methods=['GET', 'POST'])
 def sim():
-    corr, spotstd, fwdstd = 0.8, 2, 3
-    script, div = '',''
+    hedgeratio = HedgeRatio()
+    #corr, spotstd, fwdstd = 0.8, 2, 3
     if request.method=='POST':
         corr = request.form.get('corr')
         spotstd = request.form.get('spotstd')
         fwdstd = request.form.get('fwdstd')
-        hedgeratio = HedgeRatio()
-        hedgeratio.runSimulation()
-        statspotstd, statfwdstd = hedgeratio.calculateSTDs()
-        statratio = hedgeratio.calculateHedgeRatio()
-        statcorr = hedgeratio.calculateCorr()
-        p = hedgeratio.createScatterPlot()
-        script, div = components(p)
-    return render_template('sim.html', corr=corr, spotstd=spotstd, fwdstd=fwdstd, script=script, div=div)
+        hedgeratio.updateParameters(float(corr), float(spotstd), float(fwdstd))
+    else:
+        corr, spotstd, fwdstd, numobserv = hedgeratio.getParameters()
+    hedgeratio.runSimulation()
+    statspotstd, statfwdstd = hedgeratio.calculateSTDs()
+    statratio = hedgeratio.calculateHedgeRatio()
+    statcorr = hedgeratio.calculateCorr()
+    stats = {
+        'statspotstd': statspotstd,
+        'statfwdstd': statfwdstd,
+        'statratio': statratio,
+        'statcorr': statcorr
+        }
+    p = hedgeratio.createScatterPlot()
+    script, div = components(p)
+    return render_template('sim.html', corr=corr, 
+    spotstd=spotstd, fwdstd=fwdstd, script=script, div=div, stats=stats)
 
 if __name__ == '__main__':
     app.run(debug=True)

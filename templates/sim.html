@@ -7,6 +7,12 @@
         <li>Forward STD: <input type="text" name="fwdstd" value={{fwdstd}}></li>
         <br><input type="submit" name="calculate" value="Calculate">
     </ul>
+    <ul>
+        <li>Calculated Correlation: {{stats['statcorr']}}</li>
+        <li>Calculated standar deviation of spot: {{stats['statspotstd']}}</li>
+        <li>Calculated standard deviation of forward: {{stats['statfwdstd']}}</li>
+        <li>Calculated hedge ratio: {{stats['statratio']}}</li>
+    </ul>
 </form>
 {{ script|safe }}
 {{ div|safe }}
