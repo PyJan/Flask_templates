@@ -13,6 +13,7 @@ import pandas as pd
 import numpy as np
 from pandas import DataFrame, Series
 from bokeh.plotting import figure, output_file, show, reset_output
+from sklearn import linear_model
 
 
 class HedgeRatio():
@@ -105,6 +106,8 @@ class HedgeRatio():
         p = figure(title='Spot delta as a function of forward delta', 
                    x_axis_label='Forward delta', y_axis_label='Spot delta')
         p.circle(self._sim['fwd'], self._sim['spot'], size=5)
+        p.line(self._sim['fwd'], self.calculateLinearFit()[0].flatten(), 
+               line_width=3, color='red')
         return p
         
     def showScatterPlot(self):
@@ -133,7 +136,22 @@ class HedgeRatio():
         return parameters in tuple (rho, sigmaspot, sigmafwd, numobserv)
         """
         return self._rho, self._sigmaspot, self._sigmafwd, self._numobserv
+    
+    def calculateLinearFit(self):
+        """
+        calculate linear fit for fwd
         
+        returns tuple prediction, slope, intercept
+        """
+        linreg = linear_model.LinearRegression()   
+        linreg.fit(self._sim[['fwd']].values,self._sim[['spot']].values)
+        return (linreg.predict(self._sim[['fwd']]), 
+                round(linreg.coef_[0][0],3), round(linreg.intercept_[0],3))
+        
+    def getLinearFitCoef(self):
+        return self.calculateLinearFit()[1:]
+
+    
 if __name__ == '__main__':
     hedgeratio = HedgeRatio()
     hedgeratio.runSimulation()
@@ -144,5 +162,7 @@ if __name__ == '__main__':
     print(hedgeratio.calculateHedgeSTD(0.5))
     #hedgeratio.calculateHedgeStrategies().plot()
     hedgeratio.showScatterPlot()
+    #print(hedgeratio.calculateLinearFit())
+    print(hedgeratio.getLinearFitCoef())
     
         

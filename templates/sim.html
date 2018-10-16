@@ -13,6 +13,7 @@
         <li>Calculated standar deviation of spot: {{stats['statspotstd']}}</li>
         <li>Calculated standard deviation of forward: {{stats['statfwdstd']}}</li>
         <li>Calculated hedge ratio: {{stats['statratio']}}</li>
+        <li>Linear fit: forward = {{stats['statlinearfit'][0]}} * spot + {{stats['statlinearfit'][1]}}</li>
     </ul>
 </form>
 {{ script|safe }}

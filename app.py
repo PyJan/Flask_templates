@@ -36,11 +36,13 @@ def sim():
     statspotstd, statfwdstd = hedgeratio.calculateSTDs()
     statratio = hedgeratio.calculateHedgeRatio()
     statcorr = hedgeratio.calculateCorr()
+    statlinearfit = hedgeratio.getLinearFitCoef()
     stats = {
         'statspotstd': statspotstd,
         'statfwdstd': statfwdstd,
         'statratio': statratio,
-        'statcorr': statcorr
+        'statcorr': statcorr,
+        'statlinearfit': statlinearfit
         }
     p = hedgeratio.createScatterPlot()
     script, div = components(p)
