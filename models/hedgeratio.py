@@ -149,7 +149,27 @@ class HedgeRatio():
                 round(linreg.coef_[0][0],3), round(linreg.intercept_[0],3))
         
     def getLinearFitCoef(self):
+        """
+        returns slope and intercept of linear fit
+        """
         return self.calculateLinearFit()[1:]
+    
+    def createHedgingPlot(self):
+        """
+        creates plot of portfolio standard deviation based on hedge ratio
+        """
+        f = figure(x_axis_label='Hedge Ratio', 
+                   y_axis_label='Standard Deviation of Portfolio', 
+                   title='Risk of portfolio as a function of hedging ratio')
+        f.line(self.calculateHedgeStrategies().index,
+                      self.calculateHedgeStrategies().values, line_width=5)
+        return f
+        
+    def showHedgingPlot(self):
+        reset_output()
+        output_file('showme2.html')
+        show(self.createHedgingPlot())
+    
 
     
 if __name__ == '__main__':
@@ -164,5 +184,6 @@ if __name__ == '__main__':
     p = hedgeratio.createScatterPlot()
     #print(hedgeratio.calculateLinearFit())
     print(hedgeratio.getLinearFitCoef())
-    
+    hedgeratio.calculateHedgeStrategies()
+    hedgeratio.showHedgingPlot()
         

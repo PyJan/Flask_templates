@@ -45,9 +45,13 @@ def sim():
         'statlinearfit': statlinearfit
         }
     p = hedgeratio.createScatterPlot()
+    p_line = hedgeratio.createHedgingPlot()
     script, div = components(p)
+    script_line, div_line = components(p_line)
     return render_template('sim.html', corr=corr, numobserv=numobserv,
-    spotstd=spotstd, fwdstd=fwdstd, script=script, div=div, stats=stats)
+    spotstd=spotstd, fwdstd=fwdstd, script=script, div=div, stats=stats, 
+    div_line=div_line, script_line=script_line)
+
 
 if __name__ == '__main__':
     app.run(debug=True)
