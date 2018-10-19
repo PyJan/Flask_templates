@@ -161,7 +161,7 @@ if __name__ == '__main__':
     print(hedgeratio.calculateHedgeRatio())
     print(hedgeratio.calculateHedgeSTD(0.5))
     #hedgeratio.calculateHedgeStrategies().plot()
-    hedgeratio.showScatterPlot()
+    p = hedgeratio.createScatterPlot()
     #print(hedgeratio.calculateLinearFit())
     print(hedgeratio.getLinearFitCoef())
     
