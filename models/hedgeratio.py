@@ -161,7 +161,8 @@ class HedgeRatio():
         f = figure(x_axis_label='Hedge Ratio', 
                    y_axis_label='Standard Deviation of Portfolio', 
                    title='Risk of portfolio as a function of hedging ratio')
-        f.line(self.calculateHedgeStrategies().index,
+        # TODO: 1 call only, approve perfomance
+        f.line(self.calculateHedgeStrategies().index, 
                       self.calculateHedgeStrategies().values, line_width=5)
         return f
         
