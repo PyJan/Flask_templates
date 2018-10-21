@@ -1,5 +1,5 @@
 from flask import Flask, render_template, url_for, request
-from models import HedgeRatio
+from models import HedgeRatio, Schwartz97
 from bokeh.embed import components
 from bokeh.plotting import output_file, show
 
@@ -52,6 +52,22 @@ def sim():
     spotstd=spotstd, fwdstd=fwdstd, script=script, div=div, stats=stats, 
     div_line=div_line, script_line=script_line)
 
+@app.route('/schwartz97', methods=['GET','POST'])
+def schwartz97():
+    schwartz97 = Schwartz97()
+    if request.method == 'POST':
+        alpha=float(request.form['alpha']) 
+        dt=float(request.form['dt'])
+        sigma=float(request.form['sigma'])
+        mu=float(request.form['mu'])
+        S0=float(request.form['S0'])
+        steps=int(request.form['steps'])
+        numScen=int(request.form['numScen'])
+        schwartz97.updateParameters(alpha, dt, sigma, mu, S0, steps, numScen)
+    params = schwartz97.getParameters()
+    schwartz97.calculateScenarios()
+    p = schwartz97.createPyPlot()
+    return render_template('sim_schwartz97.html', params=params)
 
 if __name__ == '__main__':
     app.run(debug=True)

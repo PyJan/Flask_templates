@@ -1,0 +1,15 @@
+{% extends 'sim_base.html' %}
+{% block main %}
+<form method="POST" name='input'>
+    <ul>
+        <li>alpha: <input type="text" value="{{params['alpha']}}" name="alpha"></li>
+        <li>dt: <input type="text" value="{{params['dt']}}" name="dt"></li>
+        <li>sigma: <input type="text" value="{{params['sigma']}}" name="sigma"></li>
+        <li>mu: <input type="text" value="{{params['mu']}}" name="mu"></li>
+        <li>S_0: <input type="text" value="{{params['S0']}}" name="S0"></li>
+        <li>steps: <input type="text" value="{{params['steps']}}" name="steps"></li>
+        <li>number of scenarios: <input type="text" value="{{params['numScen']}}" name="numScen"></li>
+        <li><input type="submit" name="butt" value="Calculate"></li>
+    </ul>
+</form>
+{% endblock %}

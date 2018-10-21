@@ -89,7 +89,39 @@ class Schwartz97():
         plt.ylabel('Spot price S')
         return plt
     
-        
+    def updateParameters(self, alpha=None, dt=None, sigma=None, mu=None, 
+                         S0=None, steps=None, numScen=None):
+        """
+        update model parameters before you run simulation
+        """
+        if alpha is not None:
+            self._alpha = alpha
+        if dt is not None:
+            self._dt = dt
+        if sigma is not None:
+            self._sigma = sigma
+        if mu is not None:
+            self._mu = mu
+        if S0 is not None:
+            self._S0 = S0
+        if steps is not None:
+            self._steps= steps
+        if numScen is not None:
+            self._numScen = numScen
+            
+    def getParameters(self):
+        """
+        return dictionary of parameters
+        """
+        return {
+            'alpha': self._alpha,
+            'dt': self._dt,
+            'sigma': self._sigma,
+            'mu': self._mu,
+            'S0': self._S0,
+            'steps': self._steps,
+            'numScen': self._numScen
+        }
         
 if __name__ == '__main__':
     schwartz97 = Schwartz97()
