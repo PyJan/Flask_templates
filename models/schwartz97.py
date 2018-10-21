@@ -87,7 +87,7 @@ class Schwartz97():
         plt.plot(self.getTimeLabels(), self._sim)
         plt.xlabel('Time')
         plt.ylabel('Spot price S')
-        return plt
+        plt.savefig('static/Schwartz97.png')
     
     def updateParameters(self, alpha=None, dt=None, sigma=None, mu=None, 
                          S0=None, steps=None, numScen=None):
@@ -125,7 +125,7 @@ class Schwartz97():
         
 if __name__ == '__main__':
     schwartz97 = Schwartz97()
-    print(schwartz97)
     schwartz97.calculateScenarios()
-    schwartz97.createPyPlot().show()
+    schwartz97.createPyPlot()
+    
     
