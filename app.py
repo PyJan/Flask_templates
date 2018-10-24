@@ -66,8 +66,8 @@ def schwartz97():
         schwartz97.updateParameters(alpha, dt, sigma, mu, S0, steps, numScen)
     params = schwartz97.getParameters()
     schwartz97.calculateScenarios()
-    schwartz97.createPyPlot()
-    return render_template('sim_schwartz97.html', params=params)
+    script, div = components(schwartz97.createPlot())
+    return render_template('sim_schwartz97.html', params=params, script=script, div=div)
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -10,9 +10,10 @@ modul with class Schwartz97 for mean-reverting model
 
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
 
 from pandas import DataFrame, Series
+from bokeh.plotting import figure, output_file, show, reset_output
+from bokeh.models import ColumnDataSource
 
 
 class Schwartz97():
@@ -21,7 +22,7 @@ class Schwartz97():
     """
     
     def __init__(self, alpha=0.05, dt=1, sigma=0.04, mu=3.2, S0=20, steps=100, 
-                 numScen=50):
+                 numScen=10):
         """
         Input coefficient:\n
         alpha - coefficient of mean reversion\n
@@ -72,7 +73,9 @@ class Schwartz97():
         for t in range(1,self._steps):
             S[t]=(S[t-1]+self._alpha*(self._mu-np.log(S[t-1]))*S[t-1]*self._dt
                      +self._sigma*S[t-1]*dz[t-1])
-        self._sim = S
+        columns = ['S{:03d}'.format(x+1) for x in range(self._numScen)]
+        self._sim = DataFrame(S, columns=columns, 
+                              index=np.arange(self._steps)*self._dt)
         
     def getTimeLabels(self):
         """
@@ -80,14 +83,15 @@ class Schwartz97():
         """
         return np.array(range(self._steps))*self._dt
     
-    def createPyPlot(self):
+    def createPlot(self):
         """
-        create matplotlib.pyplot.plot
+        create Bokeh figure
         """
-        plt.plot(self.getTimeLabels(), self._sim)
-        plt.xlabel('Time')
-        plt.ylabel('Spot price S')
-        plt.savefig('static/Schwartz97.png')
+        p = figure(x_axis_label='Time', y_axis_label='Spot Price')
+        source = ColumnDataSource(self._sim)
+        for scenario in self._sim.columns:
+            p.line(x='index', y=scenario, source=source, line_color='blue', line_width=2)
+        return p
     
     def updateParameters(self, alpha=None, dt=None, sigma=None, mu=None, 
                          S0=None, steps=None, numScen=None):
@@ -123,9 +127,10 @@ class Schwartz97():
             'numScen': self._numScen
         }
         
+        
 if __name__ == '__main__':
     schwartz97 = Schwartz97()
     schwartz97.calculateScenarios()
-    schwartz97.createPyPlot()
+    #schwartz97.createPyPlot()
     
     
