@@ -69,6 +69,24 @@ class GBM():
                      line_width=2, 
                      line_color=(Paired12*(self._numScen//12+1))[:self._numScen])
         return p
+    
+    def updateParemeters(self, mu=None, sigma=None, S0=None, dt=None, 
+                         steps=None, numScen=None):
+        """
+        update model parameters
+        """
+        if mu is not None:
+            self._mu = mu
+        if sigma is not None:
+            self._sigma= sigma
+        if S0 is not None:
+            self._S0 = S0
+        if dt is not None:
+            self._dt = dt
+        if steps is not None:
+            self._steps = steps
+        if numScen is not None:
+            self._numScen = numScen
         
         
 if __name__ == '__main__':
