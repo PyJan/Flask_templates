@@ -1,7 +1,9 @@
 from flask import Flask, render_template, url_for, request
-from models import HedgeRatio, Schwartz97
+from models import HedgeRatio, Schwartz97, GBM
 from bokeh.embed import components
 from bokeh.plotting import output_file, show
+from wtforms import Form, StringField, SubmitField
+
 
 app = Flask(__name__)
 
@@ -68,6 +70,27 @@ def schwartz97():
     schwartz97.calculateScenarios()
     script, div = components(schwartz97.createPlot())
     return render_template('sim_schwartz97.html', params=params, script=script, div=div)
+
+class gbmForm(Form):
+    mu = StringField(label='mu', id='label')
+    sigma = StringField(label='sigma', id='sigma')
+    S0 = StringField(label='S0', id='S0')
+    dt = StringField(label='dt', id='dt')
+    steps = StringField(label='steps', id='steps')
+    numScen = StringField(label='numScen', id='numScen')
+    calculate = SubmitField(label='Calculate')
+
+@app.route('/gbm', methods=['GET','POST'])
+def gbm():
+    gbm = GBM() # type: models.gbm.GBM
+    if request == 'POST':
+        gbmform = gbmForm(request.form)
+    else:
+        gbmform = gbmForm()
+    gbm.updateParameters()
+    gbm.calculateScenarios()
+    script, div = components(gbm.createPlot())
+    return render_template('sim_gbm.html', gbmform=gbmform, script=script, div=div)
 
 if __name__ == '__main__':
     app.run(debug=True)

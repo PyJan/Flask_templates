@@ -70,7 +70,7 @@ class GBM():
                      line_color=(Paired12*(self._numScen//12+1))[:self._numScen])
         return p
     
-    def updateParemeters(self, mu=None, sigma=None, S0=None, dt=None, 
+    def updateParameters(self, mu=None, sigma=None, S0=None, dt=None, 
                          steps=None, numScen=None):
         """
         update model parameters
@@ -87,6 +87,18 @@ class GBM():
             self._steps = steps
         if numScen is not None:
             self._numScen = numScen
+    
+    def getParameters(self):
+        """
+        returns dictionary of input parameters
+        """
+        return dict(mu = self._mu, 
+                  sigma = self._sigma, 
+                  S0 = self._S0,
+                  dt = self._dt,
+                  steps = self._steps,
+                  numScen = self._numScen
+                  )
         
         
 if __name__ == '__main__':
