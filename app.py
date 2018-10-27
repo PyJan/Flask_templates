@@ -87,7 +87,6 @@ def gbm():
     gbmform = gbmForm(request.form, **gbm.getParameters())
     if request.method == 'POST':
         gbm.updateParameters(**gbmform.data)
-    print(gbm.getParameters())
     gbm.calculateScenarios()
     script, div = components(gbm.createPlot())
     return render_template('sim_gbm.html', gbmform=gbmform, script=script, div=div)

@@ -17,13 +17,24 @@
     <div id="container">
         <header id="header">
             {% block header %}
-            header here
+            This is header
             {% endblock %}
         </header>
 
         <aside id="aside">
             {% block aside %}
-            aside here
+            Models:
+            <ul>
+                <li>
+                    <a href="{{url_for('sim')}}">Cross Hedge</a>
+                </li>
+                <li>
+                    <a href="{{url_for('schwartz97')}}">Schwartz 97</a>
+                </li>
+                <li>
+                    <a href="{{url_for('gbm')}}">GBM</a>
+                </li>
+            </ul>
             {% endblock %}
         </aside>
         <main id="main">
