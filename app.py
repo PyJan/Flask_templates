@@ -2,10 +2,12 @@ from flask import Flask, render_template, url_for, request
 from models import HedgeRatio, Schwartz97, GBM
 from bokeh.embed import components
 from bokeh.plotting import output_file, show
-from wtforms import Form, StringField, SubmitField
+from wtforms import Form, StringField, SubmitField, FloatField, IntegerField
 
 
 app = Flask(__name__)
+
+app.config['SECRET_KEY'] = '7d441f27d441f27567d441f2b6176'
 
 @app.route('/')
 def main():
@@ -72,22 +74,20 @@ def schwartz97():
     return render_template('sim_schwartz97.html', params=params, script=script, div=div)
 
 class gbmForm(Form):
-    mu = StringField(label='mu', id='label')
-    sigma = StringField(label='sigma', id='sigma')
-    S0 = StringField(label='S0', id='S0')
-    dt = StringField(label='dt', id='dt')
-    steps = StringField(label='steps', id='steps')
-    numScen = StringField(label='numScen', id='numScen')
-    calculate = SubmitField(label='Calculate')
+    mu = FloatField(label='mu', id='label')
+    sigma = FloatField(label='sigma', id='sigma')
+    S0 = FloatField(label='S0', id='S0')
+    dt = FloatField(label='dt', id='dt')
+    steps = IntegerField(label='steps', id='steps')
+    numScen = IntegerField(label='numScen', id='numScen')
 
 @app.route('/gbm', methods=['GET','POST'])
 def gbm():
     gbm = GBM() # type: models.gbm.GBM
-    if request == 'POST':
-        gbmform = gbmForm(request.form)
-    else:
-        gbmform = gbmForm()
-    gbm.updateParameters()
+    gbmform = gbmForm(request.form, **gbm.getParameters())
+    if request.method == 'POST':
+        gbm.updateParameters(**gbmform.data)
+    print(gbm.getParameters())
     gbm.calculateScenarios()
     script, div = components(gbm.createPlot())
     return render_template('sim_gbm.html', gbmform=gbmform, script=script, div=div)

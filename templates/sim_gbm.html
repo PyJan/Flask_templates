@@ -1,15 +1,16 @@
 {% extends 'sim_base.html' %}
 {% block main %}
+<form method="POST"> 
 <ul>
 {% for param in gbmform %}
-    {% if param.type == "StringField" %}
     <li>
     {{param.label}}: {{param}}
     </li>
-    {% endif %}
 {% endfor %}
 </ul>
-{{gbmform.calculate}}
+<input type="submit" value="Calculate">
+</form>
+
 {{script|safe}}
 {{div|safe}}
 {% endblock %}
